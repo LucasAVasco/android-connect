@@ -1,0 +1,15 @@
+[Desktop Entry]
+
+Encoding=UTF-8
+Name=Android Connect
+GenericName=Android Connect
+Comment=Connect desktop to a Android device
+Exec=android-connect-pygtk
+Terminal=false
+Type=Application
+Icon=android-sdk
+StartupNotify=true
+Categories=Utility;Network;
+Keywords=Android;Connection;
+X-Desktop-File-Install-Version=0.24
+StartupWMClass=Android-connect-pygtk
