@@ -1,0 +1,64 @@
+#!/bin/bash
+
+
+# Get the ID of a device connected over USB
+GET_DEVICE_IP()
+{
+	for loop in $(
+		adb shell ip addr list |   # IP list of Android device
+			grep 'inet ' |         # Only ipv4
+			sed 's/ *inet *//g' |  # Removes beginnig of ip list
+			sed 's/\/.*$//g'       # Removes endding of ip list
+					); do
+
+				# Return the first valid ip (doesn't accept '127.0.0.1')
+				if [ "$loop" != '127.0.0.1' ]; then
+					echo -n "$loop"
+					break
+				fi
+	done
+}
+
+
+# Options
+case "$1" in
+	# Connect (USB or WIFI)
+	'--connect' )
+		scrcpy &
+		;;
+
+	# Configure adb to connect over WIFI (don't open scrcpy)
+	'--config-wifi' )
+		# Closes all scrcpy processes
+		pkill scrcpy
+
+		# Gets the device IP
+		IP=''
+		if [ "$2" == '' ]; then
+			# Gets automatically
+			IP=$(GET_DEVICE_IP)
+		else
+			# Uses the provided IP
+			IP="$2"
+		fi
+
+		echo "Device IP: ${IP}"
+
+		# Connects adb to device over WIFI
+		echo 'Starting adb connection'
+		adb kill-server
+		adb connect ${IP}:5555
+		echo 'Finishing adb connection'
+		;;
+
+	# Kill adb server (don't connect over WIFI anymore) and close all scrcpy processes
+	'--stop-connection' )
+		pkill scrcpy
+		adb kill-server
+		;;
+
+	# If isn't a compatible option
+	* )
+		echo "There aren't this option!"
+		;;
+esac
