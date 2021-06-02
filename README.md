@@ -50,4 +50,4 @@ sudo make install
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
 
- Copyright (c) 2021 Lucas de A. Vasco
+Copyright (c) 2021 Lucas de A. Vasco
